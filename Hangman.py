@@ -1,4 +1,5 @@
 import random
+import os
 
 class HangMan:
     wordToGuess = ""
@@ -26,6 +27,8 @@ class HangMan:
         self.printWelcomeMessage()
         
         while(self.errorsMade <= self.maxErrors and not self.wordIsGuessed()):
+            self.cls()
+            self.showError()
             print(*self.correctLetters)
             self.printNewLines()
             selectedOption = self.chooseOption()
@@ -36,13 +39,15 @@ class HangMan:
             if(selectedOption == "2"):
                 self.guessWord()
 
-            
         if(self.wordIsGuessed() or self.gameWon == 1):
+            self.printNewLines()
             print("Winner winner chicken dinner!")
+            self.printNewLines()
             
         if(self.errorsMade > self.maxErrors):
+            self.printNewLines()
             print("You met your untimely demise.")
-            
+            self.printNewLines()
         
     def nextLetter(self):
         letter = input("Guess a letter:", ).lower()
@@ -67,7 +72,7 @@ class HangMan:
                 self.correctLetters.insert(duplicate, letter)
             
             print("Good guess!")
-            printNewLines()
+            self.printNewLines()
             return
             
         self.incrementError()
@@ -80,13 +85,17 @@ class HangMan:
         choice = input("Choose option by typing the correct number: ", )
         self.printNewLines()
         
-        if(choice not in self.options):
+        if(str(choice) not in self.options):
             self.chooseOption()
             
         return choice
         
+    def showError(self):
+        print("Errors made: " + str(self.errorsMade))
+        
     def incrementError(self):
         self.errorsMade += 1
+        self.printNewLines()
         print("You guessed wrong! Errors made: " + str(self.errorsMade))
         self.printNewLines()
         
@@ -120,6 +129,9 @@ class HangMan:
     def printNewLines(self, amount=1):
         for i in range(amount):
             print("\n")
+            
+    def cls(self):
+        os.system('cls' if os.name=='nt' else 'clear')
         
 dict = {
     1:"sausage",
